@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:preferencias_usuario/src/share_prefs/preferencias_usuario.dart';
 import 'package:preferencias_usuario/src/widgets/menu_widget.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatefulWidget 
 {
@@ -12,36 +12,28 @@ class SettingsPage extends StatefulWidget
 
 class _SettingsPageState extends State<SettingsPage> {
 
-  bool? _colorSecundario = true;
-  int? _genero = 1;
+  bool? _colorSecundario;
+  int? _genero;
   String _nombre = "Escriba su nombre...";
 
   late TextEditingController? _textController;
 
+  final prefs = new PreferenciasUsuario();
+
   @override
   void initState()
   {
-    super.initState();
+    super.initState(); 
+    _genero = prefs.genero;
+    _colorSecundario = prefs.colorSecundario;
 
-    cargarPref();
-
-    _textController = new TextEditingController(text: _nombre);
+    _textController = new TextEditingController(text: prefs.nombreUsuario);
   }
 
-  cargarPref() async
-  {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    _genero = prefs.getInt("genero");
-    setState(() {});
-  }
   
-  _setSelectedRadio(int? valor) async
+  _setSelectedRadio(int? valor)
   {
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt("genero", valor!);
-    
+    prefs.genero = valor!;    
     _genero = valor;
     setState(() {});
   }
@@ -53,6 +45,7 @@ class _SettingsPageState extends State<SettingsPage> {
       appBar: AppBar
       (
         title: Text("Ajustes"),
+        backgroundColor: (prefs.colorSecundario) ? Colors.teal : Colors.blue,
       ),
       drawer: MenuWidget(),
       body: ListView
@@ -73,7 +66,8 @@ class _SettingsPageState extends State<SettingsPage> {
             onChanged: (value)
             {
               setState(() {
-                _colorSecundario = value;                
+                _colorSecundario = value;
+                prefs.colorSecundario = value;
               });
             },
           ),
@@ -106,7 +100,10 @@ class _SettingsPageState extends State<SettingsPage> {
                 labelText: 'Nombre',
                 helperText: 'Nombre de la persona usando el teléfono'
               ),
-              onChanged: (value){},
+              onChanged: (value)
+              {
+                prefs.nombreUsuario = value;
+              },
             ),
           )
 

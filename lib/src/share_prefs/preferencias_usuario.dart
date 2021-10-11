@@ -29,4 +29,26 @@ class PreferenciasUsuario
     _prefs.setInt("genero", value);
   }
 
+ 
+  // GET y SET del color secundario
+  bool get colorSecundario
+  {
+    return _prefs.getBool("colorSecundario") ?? false;
+  }
+
+  set colorSecundario(bool value)
+  {
+    _prefs.setBool("colorSecundario", value);
+  }
+
+  // GET y SET del nombre del usuario
+  String get nombreUsuario
+  {
+    return _prefs.getString("nombreUsuario") ?? "";
+  }
+
+  set nombreUsuario(String value)
+  {
+    _prefs.setString("nombreUsuario", value);
+  }
 }
