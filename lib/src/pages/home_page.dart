@@ -10,6 +10,9 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) 
   {
+
+    prefs.ultimaPagina = HomePage.routeName;
+
     return Scaffold
     (
       appBar: AppBar
